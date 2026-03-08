@@ -1,0 +1,24 @@
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+bool isSameTree(struct TreeNode* p, struct TreeNode* q) {
+
+    // If both are NULL
+    if(p == NULL && q == NULL)
+        return true;
+
+    // If one is NULL
+    if(p == NULL || q == NULL)
+        return false;
+
+    // If values are different
+    if(p->val != q->val)
+        return false;
+
+    // Check left and right subtree
+    return isSameTree(p->left, q->left) &&
+           isSameTree(p->right, q->right);
+}
