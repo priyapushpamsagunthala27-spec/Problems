@@ -1,0 +1,44 @@
+bool isNumber(char* s) {
+    int i = 0;
+
+    // Skip leading spaces
+    while (isspace(s[i])) i++;
+
+    bool numSeen = false;
+    bool dotSeen = false;
+    bool eSeen = false;
+    bool numAfterE = true;
+
+    for (; s[i] != '\0'; i++) {
+        if (isdigit(s[i])) {
+            numSeen = true;
+            numAfterE = true;
+        }
+        else if (s[i] == '+' || s[i] == '-') {
+            // sign allowed only at start or after e/E
+            if (i > 0 && s[i-1] != 'e' && s[i-1] != 'E')
+                return false;
+        }
+        else if (s[i] == '.') {
+            if (dotSeen || eSeen)
+                return false;
+            dotSeen = true;
+        }
+        else if (s[i] == 'e' || s[i] == 'E') {
+            if (eSeen || !numSeen)
+                return false;
+            eSeen = true;
+            numAfterE = false;
+        }
+        else if (isspace(s[i])) {
+            // skip trailing spaces
+            while (isspace(s[i])) i++;
+            return s[i] == '\0' && numSeen && numAfterE;
+        }
+        else {
+            return false;
+        }
+    }
+
+    return numSeen && numAfterE;
+}
