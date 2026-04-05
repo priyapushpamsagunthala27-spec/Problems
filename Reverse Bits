@@ -1,0 +1,12 @@
+int reverseBits(int n) {
+    unsigned int result = 0;
+    unsigned int num = (unsigned int)n;  // handle bits correctly
+
+    for (int i = 0; i < 32; i++) {
+        result <<= 1;          // shift result left
+        result |= (num & 1);   // add last bit
+        num >>= 1;             // shift input right
+    }
+
+    return (int)result;
+}
