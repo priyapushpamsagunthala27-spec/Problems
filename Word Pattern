@@ -1,0 +1,45 @@
+bool wordPattern(char* pattern, char* s) {
+    char* words[1000];
+    int wordCount = 0;
+
+    // Tokenize string s into words
+    char* token = strtok(s, " ");
+    while (token != NULL) {
+        words[wordCount++] = token;
+        token = strtok(NULL, " ");
+    }
+
+    int patternLen = strlen(pattern);
+
+    // If counts don't match → false
+    if (patternLen != wordCount) return false;
+
+    // Mapping arrays
+    char* map[256] = {0};      // pattern char → word
+    char used[1000][100];      // to check if word already mapped
+
+    for (int i = 0; i < patternLen; i++) {
+        char p = pattern[i];
+
+        // If pattern char not mapped yet
+        if (map[p] == NULL) {
+            // Check if this word is already mapped to another char
+            for (int j = 0; j < i; j++) {
+                if (strcmp(used[j], words[i]) == 0) {
+                    return false;
+                }
+            }
+
+            map[p] = words[i];
+            strcpy(used[i], words[i]);
+        } 
+        else {
+            // If already mapped, check consistency
+            if (strcmp(map[p], words[i]) != 0) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
